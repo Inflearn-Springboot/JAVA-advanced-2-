@@ -16,7 +16,7 @@ public class ServerV2 {
         ServerSocket serverSocket = new ServerSocket(PORT);
         log("서버 소켓 시작 - 리스닝 포트 : " + PORT);
 
-        Socket socket = serverSocket.accept();
+        Socket socket = serverSocket.accept(); // 블로킹
         log("소켓 연결 : " + socket);
 
         DataInputStream input = new DataInputStream(socket.getInputStream());
@@ -24,7 +24,7 @@ public class ServerV2 {
 
         while(true){
             // 클라이언트에게 문자 받기
-            String received = input.readUTF();
+            String received = input.readUTF(); // 블로킹
             log("client -> server: " + received);
 
             if(received.equals("exit")){
