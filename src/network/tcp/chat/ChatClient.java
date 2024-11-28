@@ -28,10 +28,11 @@ public class ChatClient {
                 output.writeUTF(toSend);
                 log("client -> server : " + toSend);
 
+
                 if (toSend.equals("exit")){
                     break;
                 }
-//                // 서버로부터 문자 받기 <- 이부분을 어떻게 해야하는가
+//                // 서버로부터 문자 받기 <- 이부분을 어떻게 해야하는 지 해결
 //
 //                String received = input.readUTF();
 //                log("client <- server : " + received);
