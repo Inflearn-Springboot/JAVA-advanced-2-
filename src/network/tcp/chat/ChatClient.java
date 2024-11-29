@@ -18,27 +18,29 @@ public class ChatClient {
         DataInputStream input = new DataInputStream(socket.getInputStream());
         DataOutputStream output = new DataOutputStream(socket.getOutputStream())){
             log("소캣 연결 : " + socket);
-
-            Scanner scanner = new Scanner(System.in);
             while(true){
+                Scanner scanner = new Scanner(System.in);
                 System.out.print("전송 문자 : " );
-                String toSend = scanner.nextLine();
+                String sendMsg = scanner.nextLine();
 
-                // 서버에게 문자보내기
-                output.writeUTF(toSend);
-                log("client -> server : " + toSend);
-
-
-                if (toSend.equals("exit")){
-                    break;
+                if (sendMsg.equals("exit")){
+                    return;
                 }
-//                // 서버로부터 문자 받기 <- 이부분을 어떻게 해야하는 지 해결
-//
-//                String received = input.readUTF();
-//                log("client <- server : " + received);
+
+                ReadHandler readHandler = new ReadHandler(input);
+                WriterHandler writerHandler = new WriterHandler(sendMsg, output);
+
+                Thread thread1 = new Thread(readHandler);
+                Thread thread2 = new Thread(writerHandler);
+                thread1.start();
+                thread2.start();
+
+                Thread.sleep(500);
             }
         } catch (IOException e){
             log(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
