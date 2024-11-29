@@ -1,7 +1,5 @@
 package chat.server;
 
-import network.tcp.v6.SessionManagerV6;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
