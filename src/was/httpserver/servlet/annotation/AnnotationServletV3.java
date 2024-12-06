@@ -25,13 +25,14 @@ public class AnnotationServletV3 implements HttpServlet {
         for (Object controller : controllers) {
             Method[] methods = controller.getClass().getDeclaredMethods();
             for (Method method : methods) {
-                if(method.isAnnotationPresent(Mapping.class)){
+                if(method.isAnnotationPresent(Mapping.class)) {
                     String path = method.getAnnotation(Mapping.class).value();
+
                     // 중복 경로 체크
-                    if(pathMap.containsKey(path)){
+                    if (pathMap.containsKey(path)) {
                         ControllerMethod controllerMethod = pathMap.get(path);
-                        throw new IllegalStateException("경로 중복 등록, path = " + path+
-                                ", method =" + method + ", 이미 등록된 메서드=" + controllerMethod.method);
+                        throw new IllegalStateException("경로 중복 등록, path=" + path +
+                                ", method=" + method + ", 이미 등록된 메서드=" + controllerMethod.method);
                     }
 
                     pathMap.put(path, new ControllerMethod(controller, method));
@@ -43,14 +44,14 @@ public class AnnotationServletV3 implements HttpServlet {
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         String path = request.getPath();
+
         ControllerMethod controllerMethod = pathMap.get(path);
 
-        if( controllerMethod == null ){
-            throw new PageNotFoundException("request = " + path);
+        if (controllerMethod == null) {
+            throw new PageNotFoundException("request=" + path);
         }
-        controllerMethod.invoke(request, response);
 
-        throw new PageNotFoundException("request = " + path);
+        controllerMethod.invoke(request, response);
     }
 
 
@@ -80,7 +81,7 @@ public class AnnotationServletV3 implements HttpServlet {
             }
 
             try {
-                method.invoke(controller, request, response);
+                method.invoke(controller, args);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }

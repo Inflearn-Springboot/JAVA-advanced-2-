@@ -1,6 +1,7 @@
 package was.httpserver;
 
 
+import was.httpserver.servlet.reflection.ReflectionServlet;
 import was.v4.HttpRequestHandlerV4;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class HttpServer {
 
         while(true){
             Socket socket = serverSocket.accept();
-            es.submit(new HttpRequestHandlerV4(socket));
+            es.submit(new HttpRequestHandler(socket, servletManager));
         }
     }
 }
